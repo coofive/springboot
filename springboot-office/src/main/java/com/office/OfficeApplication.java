@@ -1,12 +1,15 @@
-package com.coofive.springboot;
+package com.office;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * @author coofive
+ */
 @SpringBootApplication
-public class SpringbootApplication {
+public class OfficeApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringbootApplication.class, args);
+        SpringApplication.run(OfficeApplication.class, args);
     }
 }

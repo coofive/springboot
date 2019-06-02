@@ -8,6 +8,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <modules>
         <module>springboot-shiro</module>
+        <module>springboot-office</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -37,18 +38,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jodconverter</groupId>
-            <artifactId>jodconverter-core</artifactId>
-            <version>4.0.0-RELEASE</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.artofsolving</groupId>
-            <artifactId>jodconverter</artifactId>
-            <version>2.2.1</version>
         </dependency>
     </dependencies>
 

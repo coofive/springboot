@@ -1,4 +1,4 @@
-package com.coofive.springboot;
+package com.office.openoffice;
 
 import com.artofsolving.jodconverter.DocumentConverter;
 import com.artofsolving.jodconverter.DocumentFamily;
@@ -8,7 +8,6 @@ import com.artofsolving.jodconverter.openoffice.connection.SocketOpenOfficeConne
 import com.artofsolving.jodconverter.openoffice.converter.OpenOfficeDocumentConverter;
 
 import java.io.File;
-import java.net.ConnectException;
 
 /**
  * @author : coofive
