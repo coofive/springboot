@@ -9,6 +9,7 @@
     <modules>
         <module>springboot-shiro</module>
         <module>springboot-office</module>
+        <module>springboot-util</module>
     </modules>
     <packaging>pom</packaging>
 
