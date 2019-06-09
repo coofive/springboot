@@ -1,6 +1,7 @@
 package com.util.entity;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.util.List;
 import java.util.Objects;
@@ -11,6 +12,7 @@ import java.util.Objects;
  * @date : 6/2/2019 1:09 PM
  */
 @Data
+@Accessors(chain = true)
 public class Person {
     private Integer id;
     private String name;
