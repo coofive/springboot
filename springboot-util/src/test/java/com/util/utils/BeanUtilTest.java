@@ -77,4 +77,34 @@ public class BeanUtilTest {
         boolean result = System.identityHashCode(p1) == System.identityHashCode(p2);
         Assert.assertEquals(result, false);
     }
+
+    @Test
+    public void testConvertClassFilterNameIsNull() {
+        Person p1 = new Person().setName("TEST");
+        String s = null;
+        Person p2 = BeanUtil.convertClass(p1, Person.class, s);
+
+        // 属性值相等
+        Assert.assertEquals(p1.equals(p2), true);
+    }
+
+    @Test
+    public void testConvertClassFilterNameIsEmpty() {
+        Person p1 = new Person().setName("TEST");
+        Person p2 = BeanUtil.convertClass(p1, Person.class, "");
+
+        // 属性值相等
+        Assert.assertEquals(p1.equals(p2), true);
+    }
+
+    @Test
+    public void testConvertClassFilterNameIsName() {
+        Person p1 = new Person().setName("TEST");
+        Person p2 = BeanUtil.convertClass(p1, Person.class, "name");
+
+        // 属性值相等
+        Assert.assertEquals(p1.equals(p2), false);
+        System.out.println("p1 = " + p1);
+        System.out.println("p2 = " + p2);
+    }
 }
