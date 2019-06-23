@@ -2,8 +2,14 @@ package com.util.utils;
 
 
 import com.util.entity.Person;
+import org.assertj.core.util.Lists;
+import org.assertj.core.util.Maps;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author : coofive
@@ -106,5 +112,86 @@ public class BeanUtilTest {
         Assert.assertEquals(p1.equals(p2), false);
         System.out.println("p1 = " + p1);
         System.out.println("p2 = " + p2);
+    }
+
+    @Test
+    public void testNullObjectIsEmpty() {
+        Object obj = null;
+        Assert.assertEquals(BeanUtil.isEmpty(obj), true);
+    }
+
+    @Test
+    public void testNewObjectIsNotEmpty() {
+        Object obj = new Object();
+        Assert.assertEquals(BeanUtil.isNotEmpty(obj), true);
+    }
+
+    @Test
+    public void testStringIsEmpty() {
+        Assert.assertEquals(BeanUtil.isEmpty(""), true);
+        Assert.assertEquals(BeanUtil.isEmpty((String) null), true);
+    }
+
+    @Test
+    public void testStringIsNotEmpty() {
+        Assert.assertEquals(BeanUtil.isNotEmpty("TEST"), true);
+        Assert.assertEquals(BeanUtil.isNotEmpty(" "), true);
+    }
+
+    @Test
+    public void testMapIsEmpty() {
+        Assert.assertEquals(BeanUtil.isEmpty(new HashMap<>()), true);
+        Assert.assertEquals(BeanUtil.isEmpty(new HashMap<>(1)), true);
+    }
+
+    @Test
+    public void testMapIsNotEmpty() {
+        Map<String, String> map = new HashMap<>();
+        map.put("1", "TEST");
+        Assert.assertEquals(BeanUtil.isNotEmpty(map), true);
+        Map<String, String> map2 = new HashMap<>();
+        map2.put(null, null);
+        Assert.assertEquals(BeanUtil.isNotEmpty(map2), true);
+    }
+
+    @Test
+    public void testListIsEmpty() {
+        Assert.assertEquals(BeanUtil.isEmpty(Lists.newArrayList()), true);
+        Assert.assertEquals(BeanUtil.isEmpty(new ArrayList<>()), true);
+    }
+
+    @Test
+    public void testListIsNotEmpty() {
+        Assert.assertEquals(BeanUtil.isNotEmpty(Lists.newArrayList("TEST")), true);
+        Assert.assertEquals(BeanUtil.isNotEmpty(Lists.newArrayList((Object) null)), true);
+    }
+
+    @Test
+    public void testArrayIsEmpty() {
+        Assert.assertEquals(BeanUtil.isEmpty(new Person[]{}), true);
+        Assert.assertEquals(BeanUtil.isEmpty(new Object[]{}), true);
+        Assert.assertEquals(BeanUtil.isEmpty(new short[]{}), true);
+        Assert.assertEquals(BeanUtil.isEmpty(new int[]{}), true);
+        Assert.assertEquals(BeanUtil.isEmpty(new long[]{}), true);
+        Assert.assertEquals(BeanUtil.isEmpty(new float[]{}), true);
+        Assert.assertEquals(BeanUtil.isEmpty(new double[]{}), true);
+        Assert.assertEquals(BeanUtil.isEmpty(new char[]{}), true);
+        Assert.assertEquals(BeanUtil.isEmpty(new boolean[]{}), true);
+        Assert.assertEquals(BeanUtil.isEmpty(new byte[]{}), true);
+        Assert.assertEquals(BeanUtil.isEmpty(new byte[]{}), true);
+    }
+
+    @Test
+    public void testArrayIsNotEmpty() {
+        Assert.assertEquals(BeanUtil.isNotEmpty(new Person[]{null}), true);
+        Assert.assertEquals(BeanUtil.isNotEmpty(new Object[]{null}), true);
+        Assert.assertEquals(BeanUtil.isNotEmpty(new short[]{1}), true);
+        Assert.assertEquals(BeanUtil.isNotEmpty(new int[]{1}), true);
+        Assert.assertEquals(BeanUtil.isNotEmpty(new long[]{1}), true);
+        Assert.assertEquals(BeanUtil.isNotEmpty(new float[]{1}), true);
+        Assert.assertEquals(BeanUtil.isNotEmpty(new double[]{1}), true);
+        Assert.assertEquals(BeanUtil.isNotEmpty(new char[]{1}), true);
+        Assert.assertEquals(BeanUtil.isNotEmpty(new boolean[]{true}), true);
+        Assert.assertEquals(BeanUtil.isNotEmpty(new byte[]{1}), true);
     }
 }

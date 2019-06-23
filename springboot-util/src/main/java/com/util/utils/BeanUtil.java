@@ -5,9 +5,7 @@ import com.alibaba.fastjson.serializer.PropertyFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author : coofive
@@ -16,6 +14,305 @@ import java.util.List;
  */
 @Slf4j
 public class BeanUtil {
+
+    /**
+     * 校验集合是否为空
+     *
+     * @param coll 入参
+     * @return boolean
+     */
+    public static boolean isEmpty(Collection<?> coll) {
+        return (coll == null || coll.isEmpty());
+    }
+
+    /**
+     * 校验集合是否不为空
+     *
+     * @param coll 入参
+     * @return boolean
+     */
+    public static boolean isNotEmpty(Collection<?> coll) {
+        return !isEmpty(coll);
+    }
+
+    /**
+     * 判断Map是否为空
+     *
+     * @param map 入参
+     * @return boolean
+     */
+    public static boolean isEmpty(Map<?, ?> map) {
+        return (map == null || map.isEmpty());
+    }
+
+    /**
+     * 判断Map是否不为空
+     *
+     * @param map 入参
+     * @return boolean
+     */
+    public static boolean isNotEmpty(Map<?, ?> map) {
+        return !isEmpty(map);
+    }
+
+    /**
+     * 判断对象数组是否为空
+     *
+     * @param objects 数组
+     * @return boolean
+     */
+    public static boolean isEmpty(Object[] objects) {
+        return (objects == null || objects.length == 0);
+    }
+
+    /**
+     * 判断对象数组是否不为空
+     *
+     * @param objects 数组
+     * @return boolean
+     */
+    public static boolean isNotEmpty(Object[] objects) {
+        return !isEmpty(objects);
+    }
+
+    /**
+     * 判断long类型数组是否为空
+     *
+     * @param array long类型数组
+     * @return boolean
+     */
+    public static boolean isEmpty(long[] array) {
+        return (array == null || array.length == 0);
+    }
+
+    /**
+     * 判断long类型数组是否不为空
+     *
+     * @param array long类型数组
+     * @return boolean
+     */
+    public static boolean isNotEmpty(long[] array) {
+        return !isEmpty(array);
+    }
+
+    /**
+     * 判断int类型数组是否为空
+     *
+     * @param array int类型数组
+     * @return boolean
+     */
+    public static boolean isEmpty(int[] array) {
+        return (array == null || array.length == 0);
+    }
+
+    /**
+     * 判断int类型数组是否不为空
+     *
+     * @param array int类型数组
+     * @return boolean
+     */
+    public static boolean isNotEmpty(int[] array) {
+        return !isEmpty(array);
+    }
+
+    /**
+     * 判断short类型数组是否为空
+     *
+     * @param array short类型数组
+     * @return boolean
+     */
+    public static boolean isEmpty(short[] array) {
+        return (array == null || array.length == 0);
+    }
+
+    /**
+     * 判断short类型数组是否不为空
+     *
+     * @param array short类型数组
+     * @return boolean
+     */
+    public static boolean isNotEmpty(short[] array) {
+        return !isEmpty(array);
+    }
+
+    /**
+     * 判断char类型数组是否为空
+     *
+     * @param array char类型数组
+     * @return boolean
+     */
+    public static boolean isEmpty(char[] array) {
+        return (array == null || array.length == 0);
+    }
+
+    /**
+     * 判断char类型数组是否不为空
+     *
+     * @param array char类型数组
+     * @return boolean
+     */
+    public static boolean isNotEmpty(char[] array) {
+        return !isEmpty(array);
+    }
+
+    /**
+     * 判断byte类型数组是否为空
+     *
+     * @param array byte类型数组
+     * @return boolean
+     */
+    public static boolean isEmpty(byte[] array) {
+        return (array == null || array.length == 0);
+    }
+
+    /**
+     * 判断byte类型数组是否不为空
+     *
+     * @param array byte类型数组
+     * @return boolean
+     */
+    public static boolean isNotEmpty(byte[] array) {
+        return !isEmpty(array);
+    }
+
+    /**
+     * 判断double类型数组是否为空
+     *
+     * @param array double类型数组
+     * @return boolean
+     */
+    public static boolean isEmpty(double[] array) {
+        return (array == null || array.length == 0);
+    }
+
+    /**
+     * 判断double类型数组是否不为空
+     *
+     * @param array double类型数组
+     * @return boolean
+     */
+    public static boolean isNotEmpty(double[] array) {
+        return !isEmpty(array);
+    }
+
+    /**
+     * 判断float类型数组是否为空
+     *
+     * @param array float类型数组
+     * @return boolean
+     */
+    public static boolean isEmpty(float[] array) {
+        return (array == null || array.length == 0);
+    }
+
+    /**
+     * 判断float类型数组是否不为空
+     *
+     * @param array float类型数组
+     * @return boolean
+     */
+    public static boolean isNotEmpty(float[] array) {
+        return !isEmpty(array);
+    }
+
+    /**
+     * 判断boolean类型数组是否为空
+     *
+     * @param array boolean类型数组
+     * @return boolean
+     */
+    public static boolean isEmpty(boolean[] array) {
+        return (array == null || array.length == 0);
+    }
+
+    /**
+     * 判断boolean类型数组是否不为空
+     *
+     * @param array boolean类型数组
+     * @return boolean
+     */
+    public static boolean isNotEmpty(boolean[] array) {
+        return !isEmpty(array);
+    }
+
+    /**
+     * 判断String 是否为空为null
+     *
+     * @param str 字符串
+     * @return boolean
+     */
+    public static boolean isEmpty(CharSequence str) {
+        return (str == null || str.length() == 0);
+    }
+
+    /**
+     * 判断String 是否不为空不为null
+     *
+     * @param str 字符串
+     * @return boolean
+     */
+    public static boolean isNotEmpty(CharSequence str) {
+        return !isEmpty(str);
+    }
+
+    /**
+     * 判断obj 是否为空为null
+     *
+     * @param obj 对象
+     * @return boolean
+     */
+    public static boolean isEmpty(Object obj) {
+        if (obj == null) {
+            return true;
+        }
+        if (obj instanceof CharSequence) {
+            return isEmpty((CharSequence) obj);
+        }
+        if (obj instanceof Collection) {
+            return isEmpty((Collection) obj);
+        }
+        if (obj instanceof Map) {
+            return isEmpty((Map) obj);
+        }
+        if (obj instanceof Object[]) {
+            return isEmpty((Object[]) obj);
+        }
+        if (obj instanceof long[]) {
+            return isEmpty((long[]) obj);
+        }
+        if (obj instanceof int[]) {
+            return isEmpty((int[]) obj);
+        }
+        if (obj instanceof short[]) {
+            return isEmpty((short[]) obj);
+        }
+        if (obj instanceof char[]) {
+            return isEmpty((char[]) obj);
+        }
+        if (obj instanceof byte[]) {
+            return isEmpty((byte[]) obj);
+        }
+        if (obj instanceof double[]) {
+            return isEmpty((double[]) obj);
+        }
+        if (obj instanceof float[]) {
+            return isEmpty((float[]) obj);
+        }
+        if (obj instanceof boolean[]) {
+            return isEmpty((boolean[]) obj);
+        }
+        return false;
+    }
+
+    /**
+     * 判断obj 是否不为空不为null
+     *
+     * @param obj 字符串
+     * @return boolean
+     */
+    public static boolean isNotEmpty(Object obj) {
+        return !isEmpty(obj);
+    }
 
     /**
      * 比较两个可能为null的对象是否相等
