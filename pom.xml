@@ -10,6 +10,7 @@
         <module>springboot-shiro</module>
         <module>springboot-office</module>
         <module>springboot-util</module>
+        <module>springboot-statemachine</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -35,6 +36,18 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                    <groupId>org.springframework.boot</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- log4j2 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
 
         <!-- springboot test -->

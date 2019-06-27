@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.PropertyFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.cglib.beans.BeanMap;
 
 import java.util.*;
 
@@ -419,6 +420,30 @@ public class BeanUtil {
             log.error("copy object properties failed", e);
         }
         return null;
+    }
+
+    /**
+     * 将对象实体转换为map
+     *
+     * @param bean 对象实体
+     * @param <T>  泛型
+     * @return map
+     */
+    public static <T> Map<String, Object> beanToMap(T bean) {
+        if (bean == null) {
+            return null;
+        }
+        Map<String, Object> map = null;
+        try {
+            map = new HashMap<>(32);
+            BeanMap beanMap = BeanMap.create(bean);
+            for (Object key : beanMap.keySet()) {
+                map.put(String.valueOf(key), beanMap.get(key));
+            }
+        } catch (Exception e) {
+            log.info("beanToMap转换失败：{}, error：{}", bean, e.getMessage());
+        }
+        return map;
     }
 }
 
