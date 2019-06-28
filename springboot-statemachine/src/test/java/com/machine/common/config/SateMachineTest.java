@@ -17,20 +17,20 @@ import javax.annotation.Resource;
 public class SateMachineTest {
 
     @Resource
-    private StateMachine OrderSingleEventConfig;
+    private StateMachine orderSingleEventConfig;
 
     @Test
     public void testSingleMachine() {
 
         // 创建流程
-        OrderSingleEventConfig.start();
+        orderSingleEventConfig.start();
 
         // 触发PAY事件
-        OrderSingleEventConfig.sendEvent(OrderEvents.PAY);
+        orderSingleEventConfig.sendEvent(OrderEvents.PAY);
 
         // 触发RECEIVE事件
-        OrderSingleEventConfig.sendEvent(OrderEvents.RECEIVE);
+        orderSingleEventConfig.sendEvent(OrderEvents.RECEIVE);
         // 获取最终状态
-        System.out.println("最终状态：" + OrderSingleEventConfig.getState().getId());
+        System.out.println("最终状态：" + orderSingleEventConfig.getState().getId());
     }
 }

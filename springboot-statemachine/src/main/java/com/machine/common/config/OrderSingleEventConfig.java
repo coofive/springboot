@@ -8,7 +8,7 @@ import org.springframework.statemachine.annotation.WithStateMachine;
  * @author wenwu.liu.o
  */
 @Slf4j
-@WithStateMachine(id = "orderMachine")
+@WithStateMachine(name = "orderMachine", id = "orderMachine")
 public class OrderSingleEventConfig {
 
     /**
