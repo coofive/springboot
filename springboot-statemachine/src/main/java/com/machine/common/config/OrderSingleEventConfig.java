@@ -1,6 +1,8 @@
 package com.machine.common.config;
 
+import com.machine.common.constants.OrderEvents;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.messaging.Message;
 import org.springframework.statemachine.annotation.OnTransition;
 import org.springframework.statemachine.annotation.WithStateMachine;
 
@@ -31,7 +33,8 @@ public class OrderSingleEventConfig {
      * WAITING_FOR_RECEIVE->DONE 执行的动作
      */
     @OnTransition(source = "WAITING_FOR_RECEIVE", target = "DONE")
-    public void receive() {
+    public void receive(Message<OrderEvents> message) {
+        log.info("----传递参数:{}", message.getHeaders().get("order"));
         log.info("----用户已收货，订单完成----");
     }
 }
