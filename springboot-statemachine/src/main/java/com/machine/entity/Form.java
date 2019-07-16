@@ -8,9 +8,6 @@ import lombok.experimental.Accessors;
  */
 @Data
 @Accessors(chain = true)
-public class Order {
-    private String orderId;
-    private String address;
-    private String mobile;
-    private String type;
+public class Form {
+    private String formId;
 }

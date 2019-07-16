@@ -1,11 +1,13 @@
 package com.machine.controller;
 
+import com.machine.common.cache.MachineMap;
 import com.machine.common.component.FormStateMachineBuilder;
 import com.machine.common.component.OrderStateMachineBuilder;
 import com.machine.common.constants.FormEvents;
 import com.machine.common.constants.FormStates;
 import com.machine.common.constants.OrderEvents;
 import com.machine.common.constants.OrderStates;
+import com.machine.entity.Form;
 import com.machine.entity.Order;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.statemachine.StateMachine;
+import org.springframework.statemachine.persist.StateMachinePersister;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -61,7 +64,7 @@ public class StateMachineController {
         stateMachine.sendEvent(OrderEvents.PAY);
 
         // 触发RECEIVE事件
-        Order order = new Order().setOrderId(1).setAddress("上海市闵行区漕河泾").setMobile("17187402175").setType("RECEIVE");
+        Order order = new Order().setOrderId("1").setAddress("上海市闵行区漕河泾").setMobile("17187402175").setType("RECEIVE");
         Message<OrderEvents> message = MessageBuilder.withPayload(OrderEvents.RECEIVE).setHeader("order", order).build();
         stateMachine.sendEvent(message);
 
@@ -90,5 +93,46 @@ public class StateMachineController {
 
         // 获取最终状态
         System.out.println("最终状态：" + formMachine.getState().getId());
+    }
+
+    @Resource(name = "orderMemoryPersister")
+    private StateMachinePersister<OrderStates, OrderEvents, String> orderMemoryPersister;
+
+
+    @GetMapping("/test4")
+    public void testSendEvent(String machineId, String events, String id) throws Exception {
+        if ("form".equals(machineId)) {
+            StateMachine sm = MachineMap.formMap.get(id);
+            Form form = new Form();
+            form.setFormId(id);
+            if (sm == null) {
+                if ("WRITE".equals(events)) {
+                    sm = formStateMachineBuilder.build(beanFactory);
+                    sm.start();
+                    MachineMap.formMap.put(id, sm);
+                } else {
+                    System.out.println("该表单流程尚未开始，不能做" + events + "操作！");
+                    return;
+                }
+            }
+            Message<FormEvents> message = MessageBuilder.withPayload(FormEvents.valueOf(events)).setHeader("form", form).build();
+            sm.sendEvent(message);
+        }
+        if ("order".equals(machineId)) {
+            StateMachine sm = orderStateMachineBuilder.build(beanFactory);
+
+            orderMemoryPersister.restore(sm, id);
+            System.out.println("sm.getState().getId() = " + sm.getState().getId());
+            Order order = new Order().setOrderId(id);
+            if ("PAY".equals(events)) {
+                sm.start();
+            }
+            Message<OrderEvents> message = MessageBuilder.withPayload(OrderEvents.valueOf(events)).setHeader("order", order).build();
+            sm.sendEvent(message);
+
+            System.out.println("sm.getState().getId() = " + sm.getState().getId());
+            // 持久化
+            orderMemoryPersister.persist(sm, order.getOrderId());
+        }
     }
 }
