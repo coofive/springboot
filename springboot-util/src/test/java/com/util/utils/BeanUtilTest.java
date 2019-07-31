@@ -1,15 +1,14 @@
 package com.util.utils;
 
 
+import com.alibaba.fastjson.TypeReference;
 import com.util.entity.Person;
 import org.assertj.core.util.Lists;
 import org.assertj.core.util.Maps;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author : coofive
@@ -63,8 +62,16 @@ public class BeanUtilTest {
     }
 
     @Test
+    public void testConvertClass() {
+        Assert.assertEquals(BeanUtil.convertClass(null, new TypeReference<Person>() {
+        }), null);
+        Assert.assertEquals(BeanUtil.convertClass(new Person().setId(1), new TypeReference<Person>() {
+        }).getId(), new Integer(1));
+    }
+
+    @Test
     public void testConvertNull() {
-        Assert.assertEquals(BeanUtil.convertClass(null, Person.class), null);
+        Assert.assertEquals(BeanUtil.convertClass((Person) null, Person.class), null);
     }
 
     /**
@@ -193,5 +200,66 @@ public class BeanUtilTest {
         Assert.assertEquals(BeanUtil.isNotEmpty(new char[]{1}), true);
         Assert.assertEquals(BeanUtil.isNotEmpty(new boolean[]{true}), true);
         Assert.assertEquals(BeanUtil.isNotEmpty(new byte[]{1}), true);
+    }
+
+    @Test
+    public void beanToMap() {
+        Assert.assertEquals(BeanUtil.beanToMap(null), new HashMap<>());
+
+        Person p1 = new Person().setId(1).setName("test");
+        Map<String, Object> map = BeanUtil.beanToMap(p1);
+        Assert.assertEquals(map.size() > 2, true);
+    }
+
+    @Test
+    public void beanToMapNotNull() {
+        Assert.assertEquals(BeanUtil.beanToMapNotNull(null), new HashMap<>());
+
+        Person p1 = new Person().setId(1).setName("test");
+        Map<String, Object> map = BeanUtil.beanToMapNotNull(p1);
+        Assert.assertEquals(map.size(), 2);
+    }
+
+    @Test
+    public void beansToMaps() {
+        Assert.assertEquals(BeanUtil.beansToMaps(Lists.newArrayList()), Collections.emptyList());
+        Assert.assertEquals(BeanUtil.beansToMaps(null), Collections.emptyList());
+        Person p1 = new Person().setId(1).setName("test");
+        Assert.assertEquals(BeanUtil.beansToMaps(Lists.newArrayList(p1)).size(), 1);
+    }
+
+    @Test
+    public void beansToMapsNotNull() {
+        Assert.assertEquals(BeanUtil.beansToMaps(Lists.newArrayList()), Collections.emptyList());
+        Assert.assertEquals(BeanUtil.beansToMaps(null), Collections.emptyList());
+        Person p1 = new Person().setId(1).setName("test");
+        Assert.assertEquals(BeanUtil.beansToMapsNotNull(Lists.newArrayList(p1)).size(), 1);
+        Person p2 = new Person();
+        List<Map<String, Object>> maps = BeanUtil.beansToMapsNotNull(Lists.newArrayList(p2));
+        Assert.assertEquals(maps.size(), 0);
+    }
+
+    @Test
+    public void mapToBean() {
+        Assert.assertEquals(BeanUtil.mapToBean(null, Person.class), null);
+        Assert.assertEquals(BeanUtil.mapToBean(new HashMap(), Person.class), null);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", 1);
+        Person person = BeanUtil.mapToBean(map, Person.class);
+        Assert.assertEquals(person.getId(), new Integer(1));
+    }
+
+
+    @Test
+    public void mapToBeanByType() {
+        Assert.assertEquals(BeanUtil.mapToBean(null, Person.class), null);
+        Assert.assertEquals(BeanUtil.mapToBean(new HashMap(), Person.class), null);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", 1);
+        Person person = BeanUtil.mapToBean(map, new TypeReference<Person>() {
+        });
+        Assert.assertEquals(person.getId(), new Integer(1));
     }
 }

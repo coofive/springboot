@@ -1,12 +1,17 @@
 package com.util.utils;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.serializer.PropertyFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cglib.beans.BeanMap;
+import org.springframework.util.ClassUtils;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author : coofive
@@ -362,6 +367,27 @@ public class BeanUtil {
      * 具有相同属性名称的对象集合转化
      *
      * @param source 源对象
+     * @param type   目标对象类型
+     * @param <T1>   源对象类型
+     * @param <T2>   目标对象类型
+     * @return List<T2>
+     */
+    public static <T1, T2> T2 convertClass(T1 source, TypeReference<T2> type) {
+        if (source == null) {
+            return null;
+        }
+        try {
+            return JSON.parseObject(JSON.toJSONString(source), type);
+        } catch (Exception e) {
+            log.error("converterClass object to object failed:{}", source, e);
+        }
+        return null;
+    }
+
+    /**
+     * 具有相同属性名称的对象集合转化
+     *
+     * @param source 源对象
      * @param target 目标对象class
      * @param <T1>   源对象类型
      * @param <T2>   目标对象类型
@@ -369,7 +395,7 @@ public class BeanUtil {
      */
     public static <T1, T2> List<T2> convertClass(List<T1> source, Class<T2> target) {
         if (source == null || source.size() == 0) {
-            return null;
+            return Collections.emptyList();
         }
         try {
             return JSON.parseArray(JSON.toJSONString(source), target);
@@ -412,12 +438,15 @@ public class BeanUtil {
      * @return T
      */
     public static <T> T copyProperties(Object source, Class<T> target) {
+        if (source == null) {
+            return null;
+        }
         try {
             T t = target.newInstance();
             BeanUtils.copyProperties(source, t);
             return t;
         } catch (Exception e) {
-            log.error("copy object properties failed", e);
+            log.error("copy object properties failed:{}", source, e);
         }
         return null;
     }
@@ -431,19 +460,131 @@ public class BeanUtil {
      */
     public static <T> Map<String, Object> beanToMap(T bean) {
         if (bean == null) {
-            return null;
+            log.debug("bean is empty, return a empty map.");
+            return new HashMap<>(1);
         }
-        Map<String, Object> map = null;
+        Map<String, Object> map = new HashMap<>(32);
         try {
-            map = new HashMap<>(32);
             BeanMap beanMap = BeanMap.create(bean);
             for (Object key : beanMap.keySet()) {
                 map.put(String.valueOf(key), beanMap.get(key));
             }
         } catch (Exception e) {
-            log.info("beanToMap转换失败：{}, error：{}", bean, e.getMessage());
+            log.error("bean to map failed:{}, error:{}", bean, e.getMessage());
         }
         return map;
+    }
+
+    /**
+     * 将对象实体转换为map, 过滤 key为null 或value为null
+     *
+     * @param bean 对象实体
+     * @param <T>  泛型
+     * @return map
+     */
+    public static <T> Map<String, Object> beanToMapNotNull(T bean) {
+        if (bean == null) {
+            log.debug("bean is empty, return a empty map.");
+            return new HashMap<>(1);
+        }
+        Map<String, Object> map = new HashMap<>(32);
+        try {
+            BeanMap beanMap = BeanMap.create(bean);
+            for (Object key : beanMap.keySet()) {
+                if (key == null || beanMap.get(key) == null) {
+                    log.info("beanMap key or value is null, filter key:{}, value:{}", key, beanMap.get(key));
+                    continue;
+                }
+                map.put(String.valueOf(key), beanMap.get(key));
+            }
+        } catch (Exception e) {
+            log.info("bean to map filter null value failed:{}, error:{}", bean, e.getMessage());
+        }
+        return map;
+    }
+
+    /**
+     * 对象集合转化成map集合
+     *
+     * @param beans 对象集合
+     * @param <T>   对象泛型
+     * @return List 返回转换后的map列表
+     */
+    public static <T> List<Map<String, Object>> beansToMaps(List<T> beans) {
+        if (beans == null || beans.size() <= 0) {
+            log.debug("beans is empty, return a empty list.");
+            return Collections.emptyList();
+        }
+        try {
+            return beans.stream().map(BeanUtil::beanToMap).collect(Collectors.toList());
+        } catch (Exception e) {
+            log.info("beans to maps failed:{}, error:{}", beans, e.getMessage());
+        }
+        return Collections.emptyList();
+    }
+
+    /**
+     * 对象集合转化成map集合 过滤key为null,value为null
+     *
+     * @param beans 对象集合
+     * @param <T>   对象泛型
+     * @return List 返回转换后的map列表
+     */
+    public static <T> List<Map<String, Object>> beansToMapsNotNull(List<T> beans) {
+        if (beans == null || beans.size() <= 0) {
+            log.debug("beans is empty, return a empty list.");
+            return Collections.emptyList();
+        }
+        try {
+            return beans.stream().map(BeanUtil::beanToMapNotNull)
+                    .filter(map -> !map.isEmpty())
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            log.info("beans to maps filter null value failed:{}, error:{}", beans, e.getMessage());
+        }
+        return Collections.emptyList();
+    }
+
+    /**
+     * map 装换为 java bean 对象
+     *
+     * @param map    map
+     * @param target 目标对象
+     * @param <T>    目标对象类型
+     * @return T 目标对象实例
+     */
+    public static <T> T mapToBean(Map map, Class<T> target) {
+        if (map == null || map.isEmpty()) {
+            log.debug("map is empty");
+            return null;
+        }
+        try {
+            return JSON.parseObject(JSON.toJSONString(map), target);
+        } catch (Exception e) {
+            log.info("beans to maps filter null value failed:{}, error:{}", map, e.getMessage());
+        }
+        return null;
+    }
+
+    /**
+     * map 装换为 java bean 对象
+     *
+     * @param map  map
+     * @param type 指定类型
+     * @param <T>  目标对象类型
+     * @return 目标对象实例
+     */
+    public static <T> T mapToBean(Map map, TypeReference<T> type) {
+        if (map == null || map.isEmpty()) {
+            log.debug("map is empty.");
+            return null;
+        }
+        try {
+            return JSON.parseObject(JSON.toJSONString(map), type);
+        } catch (Exception e) {
+            log.info("beans to maps filter null value failed:{}, error:{}", map, e.getMessage());
+        }
+        return null;
     }
 }
 
