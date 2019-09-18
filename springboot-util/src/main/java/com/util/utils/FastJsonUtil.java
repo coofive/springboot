@@ -12,7 +12,7 @@ import java.util.Map;
  * @author wenwu.liu.o
  */
 @Slf4j
-public class FastJsonUtil {
+public final class FastJsonUtil {
     /*==============================object to json=======================================*/
 
     /**
@@ -22,6 +22,9 @@ public class FastJsonUtil {
      * @return String
      */
     public static String objectToJson(Object obj) {
+        if (obj == null) {
+            return null;
+        }
         try {
             return JSON.toJSONString(obj);
         } catch (Exception e) {
