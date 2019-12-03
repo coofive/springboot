@@ -11,6 +11,7 @@
         <module>springboot-office</module>
         <module>springboot-util</module>
         <module>springboot-statemachine</module>
+        <module>springboot-listener</module>
     </modules>
     <packaging>pom</packaging>
 
