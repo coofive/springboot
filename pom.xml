@@ -12,6 +12,7 @@
         <module>springboot-util</module>
         <module>springboot-statemachine</module>
         <module>springboot-listener</module>
+        <module>springboot-mail</module>
     </modules>
     <packaging>pom</packaging>
 
