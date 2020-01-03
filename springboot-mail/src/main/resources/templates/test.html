@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+</head>
+<body>
+<div style='border:none;border-top:solid #EEEEEE 1.0pt;padding:8.0pt 0 0 0;margin-top:7.5pt;margin-bottom:10.5pt'>
+    <p style='margin-bottom:11.25pt;line-height:13.5pt'>
+    </p>
+
+    <!-- 赋值之前先判断是否为null，可以避免异常 -->
+    <span th:if="${title != null}" th:text="${title}">测试主题</span>
+    <span th:if="${userInfo.name != null}" th:text="${userInfo.name}">李淑敏</span>
+
+    <!-- 当这个字段在对象不存在时，直接获取字段会undefined，通过map方式取值可避免 -->
+    <span th:if="${userInfo.get('age') != null}" th:text="${userInfo.age}">18</span>
+
+    <!-- 遍历数组 -->
+    <div th:each="log,iterStat : ${logs}">
+        <p>
+            <span th:text="${log.createTime}">2019-12-24 15:00:00</span>
+            <span>	    </span>
+            <span th:text="${log.creator}">coofive</span>
+        </p>
+        <hr/>
+    </div>
+</div>
+</body>
+</html>

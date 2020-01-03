@@ -7,9 +7,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 
-import static org.junit.Assert.*;
-
 /**
+ *
  * @author : coofive
  * @version : 1.0.0
  * @date : 12/4/2019 9:29 PM
@@ -18,20 +17,20 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 public class MailServiceTest {
     @Resource
-    private MailService mailService;
+    private SendMailService sendMailService;
 
     @Test
     public void sendSimpleMail() {
-        mailService.sendSimpleMail();
+        sendMailService.sendSimpleMail();
     }
 
     @Test
     public void sendAttachmentMail() throws Exception {
-        mailService.sendAttachmentMail();
+        sendMailService.sendAttachmentMail();
     }
 
     @Test
     public void sendInlineMail() throws Exception {
-        mailService.sendInlineMail();
+        sendMailService.sendInlineMail();
     }
 }
