@@ -13,6 +13,7 @@
         <module>springboot-statemachine</module>
         <module>springboot-listener</module>
         <module>springboot-mail</module>
+        <module>springboot-exceptions</module>
     </modules>
     <packaging>pom</packaging>
 
